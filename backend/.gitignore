@@ -1,0 +1,20 @@
+node_modules/
+.env
+*.log
+.DS_Store
+dist/
+build/
+.env.local
+.env.*.local
+
+*.pem
+*.key
+coverage/
+.vscode/    
+.idea/
+# Docker
+docker-compose.override.yml
+# Database
+*.sql.backup
+postgres_data/
+

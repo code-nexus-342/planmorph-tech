@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900;
+    @apply text-white;
+    @apply min-h-screen;
+    @apply font-sans;
+    @apply antialiased;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-black/30 backdrop-blur-md border border-white/10;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 via-secondary-400 to-primary-400 bg-clip-text text-transparent;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-slate-800/50;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary-500/50 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-500/70;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Button styles */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500;
+    @apply hover:from-primary-600 hover:to-secondary-600;
+    @apply text-white shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply glass hover:bg-white/20;
+    @apply text-white;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary-500 text-primary-400;
+    @apply hover:bg-primary-500 hover:text-white;
+  }
+
+  /* Card styles */
+  .card {
+    @apply glass rounded-xl p-6;
+    @apply transition-all duration-300;
+    @apply hover:bg-white/15;
+  }
+
+  /* Input styles */
+  .input {
+    @apply glass rounded-lg px-4 py-3;
+    @apply text-white placeholder-gray-400;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+    @apply transition-all duration-300;
+  }
+
+  .textarea {
+    @apply input resize-none;
+  }
+
+  .label {
+    @apply block text-sm font-semibold mb-2 text-gray-300;
+  }
+
+  /* Section styles */
+  .section {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Heading styles */
+  .heading-1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+    @apply bg-gradient-to-r from-white via-primary-200 to-white bg-clip-text text-transparent;
+  }
+
+  .heading-2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-white;
+  }
+
+  .heading-3 {
+    @apply text-2xl md:text-3xl font-semibold text-white;
+  }
+}
+
+/* Animations */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

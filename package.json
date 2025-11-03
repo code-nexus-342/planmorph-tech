@@ -1,0 +1,30 @@
+{
+  "name": "planmorph-tech",
+  "version": "1.0.0",
+  "description": "Full-stack AI-driven tech consultancy website",
+  "main": "index.js",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build": "docker-compose build",
+    "init-db": "cd backend && npm run init-db"
+  },
+  "keywords": [
+    "react",
+    "nodejs",
+    "express",
+    "postgresql",
+    "fullstack"
+  ],
+  "author": "PlanMorph Tech",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
