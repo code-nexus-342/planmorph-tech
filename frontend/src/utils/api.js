@@ -72,6 +72,8 @@ export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
   register: (userData) => api.post('/auth/register', userData),
   verify: (token) => api.post('/auth/verify', { token }),
+  requestReset: (data) => api.post('/auth/request-reset', data),
+  resetPassword: (data) => api.post('/auth/reset-password', data),
 };
 
 export const requestsAPI = {

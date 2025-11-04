@@ -95,6 +95,11 @@
     @apply transition-all duration-300;
   }
 
+  /* Select dropdown options styling */
+  .input select option {
+    @apply bg-gray-800 text-white;
+  }
+
   .textarea {
     @apply input resize-none;
   }

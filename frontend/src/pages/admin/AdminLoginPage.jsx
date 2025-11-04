@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { authAPI } from '../../utils/api';
 
 const AdminLoginPage = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(location.state?.message || '');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -64,6 +66,31 @@ const AdminLoginPage = () => {
 
         {/* Login Form */}
         <div className="glass rounded-2xl p-8">
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-green-500/10 border border-green-500/50 rounded-lg p-4 mb-6"
+            >
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-green-400 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span className="text-green-100 text-sm">{success}</span>
+              </div>
+            </motion.div>
+          )}
+
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -142,10 +169,29 @@ const AdminLoginPage = () => {
             </motion.button>
           </form>
 
-          <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
-              ← Back to Website
-            </a>
+          <div className="mt-6 space-y-3">
+            <div className="text-center">
+              <Link
+                to="/admin/forgot-password"
+                className="text-sm text-primary-400 hover:text-primary-300 transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <div className="text-center text-sm text-gray-400">
+              Don't have an account?{' '}
+              <Link
+                to="/admin/signup"
+                className="text-primary-400 hover:text-primary-300 transition-colors"
+              >
+                Sign up
+              </Link>
+            </div>
+            <div className="text-center border-t border-gray-700 pt-4">
+              <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
+                ← Back to Website
+              </a>
+            </div>
           </div>
         </div>
 

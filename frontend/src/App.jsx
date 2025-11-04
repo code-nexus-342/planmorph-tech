@@ -7,6 +7,9 @@ import PricingPage from './pages/PricingPage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ForgotPasswordPage from './pages/admin/ForgotPasswordPage';
+import ResetPasswordPage from './pages/admin/ResetPasswordPage';
+import SignupPage from './pages/admin/SignupPage';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -42,6 +45,9 @@ function App() {
 
           {/* Admin Routes without Navbar */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/admin/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/admin/signup" element={<SignupPage />} />
           <Route 
             path="/admin/dashboard" 
             element={

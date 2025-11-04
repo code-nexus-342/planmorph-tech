@@ -199,4 +199,138 @@ router.post('/verify', async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/auth/request-reset
+ * @desc    Request password reset (sends email with reset token)
+ * @access  Public
+ */
+router.post(
+  '/request-reset',
+  [
+    body('email')
+      .isEmail()
+      .normalizeEmail()
+      .withMessage('Please provide a valid email address'),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ 
+          error: 'Validation Error',
+          details: errors.array() 
+        });
+      }
+
+      const { email } = req.body;
+
+      // Check if user exists
+      const result = await query(
+        'SELECT id, email FROM users WHERE email = $1',
+        [email]
+      );
+
+      // Always return success to prevent email enumeration
+      if (result.rows.length === 0) {
+        return res.json({
+          message: 'If an account exists with this email, a password reset link has been sent.'
+        });
+      }
+
+      const user = result.rows[0];
+
+      // Generate reset token (valid for 1 hour)
+      const resetToken = jwt.sign(
+        { id: user.id, email: user.email, type: 'password-reset' },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      // Send email with reset token
+      const { sendPasswordResetEmail } = await import('../services/emailService.js');
+      await sendPasswordResetEmail(user.email, resetToken);
+
+      res.json({
+        message: 'If an account exists with this email, a password reset link has been sent.'
+      });
+
+    } catch (error) {
+      console.error('Password reset request error:', error);
+      res.status(500).json({
+        error: 'Request Failed',
+        message: 'An error occurred while processing your request'
+      });
+    }
+  }
+);
+
+/**
+ * @route   POST /api/auth/reset-password
+ * @desc    Reset password with token
+ * @access  Public
+ */
+router.post(
+  '/reset-password',
+  [
+    body('token')
+      .notEmpty()
+      .withMessage('Reset token is required'),
+    body('newPassword')
+      .isLength({ min: 8 })
+      .withMessage('Password must be at least 8 characters long')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+      .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ 
+          error: 'Validation Error',
+          details: errors.array() 
+        });
+      }
+
+      const { token, newPassword } = req.body;
+
+      // Verify token
+      let decoded;
+      try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Check if it's a password reset token
+        if (decoded.type !== 'password-reset') {
+          throw new Error('Invalid token type');
+        }
+      } catch (error) {
+        return res.status(401).json({
+          error: 'Invalid Token',
+          message: 'Reset token is invalid or has expired'
+        });
+      }
+
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(newPassword, salt);
+
+      // Update password
+      await query(
+        'UPDATE users SET password_hash = $1 WHERE id = $2',
+        [passwordHash, decoded.id]
+      );
+
+      res.json({
+        message: 'Password reset successfully. You can now login with your new password.'
+      });
+
+    } catch (error) {
+      console.error('Password reset error:', error);
+      res.status(500).json({
+        error: 'Reset Failed',
+        message: 'An error occurred while resetting your password'
+      });
+    }
+  }
+);
+
 export default router;

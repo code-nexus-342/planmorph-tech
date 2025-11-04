@@ -578,8 +578,131 @@ We typically respond within 24 hours during business days.
   }
 };
 
+/**
+ * Send password reset email
+ */
+export const sendPasswordResetEmail = async (email, resetToken) => {
+  try {
+    const transporter = createTransporter();
+    const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/reset-password?token=${resetToken}`;
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset Request - PlanMorph Tech',
+      html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Password Reset - PlanMorph Tech</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+          <table role="presentation" style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 40px 20px;">
+                <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                  
+                  <!-- Header -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
+                      <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700;">
+                        PlanMorph Tech
+                      </h1>
+                      <p style="margin: 8px 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">
+                        Password Reset Request
+                      </p>
+                    </td>
+                  </tr>
+
+                  <!-- Content -->
+                  <tr>
+                    <td style="padding: 40px 30px;">
+                      <h2 style="margin: 0 0 16px; color: #111827; font-size: 24px; font-weight: 600;">
+                        Reset Your Password
+                      </h2>
+                      <p style="margin: 0 0 24px; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                        We received a request to reset your password for your PlanMorph Tech admin account. Click the button below to create a new password.
+                      </p>
+
+                      <!-- Reset Button -->
+                      <div style="text-align: center; margin: 32px 0;">
+                        <a href="${resetLink}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);">
+                          Reset Password
+                        </a>
+                      </div>
+
+                      <!-- Security Notice -->
+                      <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 8px; margin: 24px 0;">
+                        <p style="margin: 0 0 8px; color: #92400e; font-size: 14px; font-weight: 600;">
+                          ⚠️ Security Notice
+                        </p>
+                        <p style="margin: 0; color: #78350f; font-size: 13px; line-height: 1.5;">
+                          This link will expire in 1 hour. If you didn't request this password reset, please ignore this email or contact us if you have concerns.
+                        </p>
+                      </div>
+
+                      <!-- Manual Link -->
+                      <p style="margin: 24px 0 0; color: #6b7280; font-size: 13px; line-height: 1.6;">
+                        If the button doesn't work, copy and paste this link into your browser:
+                      </p>
+                      <p style="margin: 8px 0 0; color: #667eea; font-size: 12px; word-break: break-all;">
+                        ${resetLink}
+                      </p>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="background-color: #f9fafb; padding: 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+                      <p style="margin: 0 0 8px; color: #111827; font-size: 16px; font-weight: 600;">
+                        PlanMorph Tech
+                      </p>
+                      <p style="margin: 0 0 16px; color: #6b7280; font-size: 14px;">
+                        AI-Powered Web Solutions for Kenya
+                      </p>
+                      <p style="margin: 0; color: #9ca3af; font-size: 13px;">
+                        Email: ${process.env.EMAIL_USER}
+                      </p>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
+      text: `
+Password Reset Request - PlanMorph Tech
+
+We received a request to reset your password for your admin account.
+
+Click this link to reset your password (expires in 1 hour):
+${resetLink}
+
+If you didn't request this password reset, please ignore this email or contact us at ${process.env.EMAIL_USER}
+
+Best regards,
+PlanMorph Tech
+AI-Powered Web Solutions for Kenya
+      `.trim(),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Password reset email sent:', info.messageId);
+
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw new Error('Failed to send password reset email');
+  }
+};
+
 export default {
   sendQuoteEmail,
   sendNewRequestNotification,
-  sendClientConfirmationEmail
+  sendClientConfirmationEmail,
+  sendPasswordResetEmail
 };
