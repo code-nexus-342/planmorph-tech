@@ -5,8 +5,10 @@ import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PricingPage from './pages/PricingPage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
+import CareersPage from './pages/CareersPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import TalentDashboard from './pages/admin/TalentDashboard';
 import ForgotPasswordPage from './pages/admin/ForgotPasswordPage';
 import ResetPasswordPage from './pages/admin/ResetPasswordPage';
 import SignupPage from './pages/admin/SignupPage';
@@ -37,6 +39,7 @@ function App() {
                   <Route path="/services" element={<ServicesPage />} />
                   <Route path="/pricing" element={<PricingPage />} />
                   <Route path="/quote" element={<QuoteRequestPage />} />
+                  <Route path="/careers" element={<CareersPage />} />
                 </Routes>
               </main>
               <Footer />
@@ -53,6 +56,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/talent" 
+            element={
+              <ProtectedRoute>
+                <TalentDashboard />
               </ProtectedRoute>
             } 
           />

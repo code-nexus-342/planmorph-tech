@@ -92,4 +92,13 @@ export const quotesAPI = {
   delete: (id) => api.delete(`/quotes/${id}`),
 };
 
+export const talentAPI = {
+  apply: (applicationData) => api.post('/talent/apply', applicationData),
+  getAll: (params) => api.get('/talent/applications', { params }),
+  getById: (id) => api.get(`/talent/applications/${id}`),
+  updateStatus: (id, data) => api.patch(`/talent/applications/${id}/status`, data),
+  assignAssessment: (id, data) => api.post(`/talent/applications/${id}/assessment`, data),
+  scheduleInterview: (id, data) => api.post(`/talent/applications/${id}/interview`, data),
+};
+
 export default api;

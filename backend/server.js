@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import requestRoutes from './routes/requestRoutes.js';
 import quoteRoutes from './routes/quoteRoutes.js';
+import talentRoutes from './routes/talentRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/quotes', quoteRoutes);
+app.use('/api/talent', talentRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

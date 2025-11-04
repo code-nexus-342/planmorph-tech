@@ -700,9 +700,275 @@ AI-Powered Web Solutions
   }
 };
 
+/**
+ * Send talent application emails
+ */
+const sendTalentEmail = async (email, fullName, type, data = {}) => {
+  try {
+    let subject, htmlContent, textContent;
+
+    switch (type) {
+      case 'application_received':
+        subject = '✅ Application Received - PlanMorph Tech';
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="color: #ffffff; margin: 0;">Application Received!</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Thank you for applying to join the PlanMorph Tech team! We've received your application 
+                and are excited to review your profile.
+              </p>
+              ${data.needsAssessment ? `
+                <div style="background: #f0f4ff; border-left: 4px solid #667eea; padding: 20px; margin: 20px 0;">
+                  <p style="color: #667eea; font-weight: bold; margin: 0 0 10px 0;">📝 Assessment Required</p>
+                  <p style="color: #666; margin: 0;">
+                    Based on your experience level, we may assign you a practical task to showcase your skills. 
+                    You'll receive details within 2-3 business days.
+                  </p>
+                </div>
+              ` : `
+                <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; margin: 20px 0;">
+                  <p style="color: #10b981; font-weight: bold; margin: 0 0 10px 0;">✨ Your Portfolio Looks Great!</p>
+                  <p style="color: #666; margin: 0;">
+                    Our team will review your application and portfolio. If it's a good match, 
+                    we'll reach out to schedule an interview.
+                  </p>
+                </div>
+              `}
+              <p style="color: #666; line-height: 1.6;">
+                <strong>What's Next?</strong><br>
+                • We'll review your application within 3-5 business days<br>
+                • You'll hear from us via email regardless of the outcome<br>
+                • Keep an eye on your inbox for updates
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                Application ID: <strong>#${data.applicationId}</strong>
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Best of luck!<br>
+                <strong>PlanMorph Tech Talent Team</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nThank you for applying to join the PlanMorph Tech team!\n\nApplication ID: #${data.applicationId}\n\nWe'll review your application and get back to you within 3-5 business days.\n\nBest regards,\nPlanMorph Tech`;
+        break;
+
+      case 'assessment_assigned':
+        subject = '📝 Assessment Task Assigned - PlanMorph Tech';
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="color: #ffffff; margin: 0;">Assessment Task</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                We're impressed with your application! To better understand your skills, 
+                we'd like you to complete a practical assessment task.
+              </p>
+              <div style="background: #f0f4ff; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                <h3 style="color: #667eea; margin: 0 0 15px 0;">${data.taskTitle}</h3>
+                <p style="color: #666; line-height: 1.6;">${data.taskDescription}</p>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                  <p style="color: #666; margin: 5px 0;">
+                    <strong>Deadline:</strong> ${data.deadline}
+                  </p>
+                </div>
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                <strong>Submission Instructions:</strong><br>
+                • Upload your work to GitHub, CodePen, Figma, or similar<br>
+                • Reply to this email with the link to your submission<br>
+                • Include a brief explanation of your approach<br>
+                • Submit before the deadline
+              </p>
+              <div style="background: #fff9e6; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0;">
+                <p style="color: #92400e; margin: 0; font-size: 14px;">
+                  ⚠️ This is your opportunity to showcase your real-world skills. Take your time and do your best work!
+                </p>
+              </div>
+              <p style="color: #666;">
+                Questions? Reply to this email and we'll be happy to help.
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Good luck!<br>
+                <strong>PlanMorph Tech Team</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nAssessment Task: ${data.taskTitle}\n\n${data.taskDescription}\n\nDeadline: ${data.deadline}\n\nPlease submit your work by replying to this email with your submission link.\n\nBest regards,\nPlanMorph Tech`;
+        break;
+
+      case 'interview_scheduled':
+        subject = '📅 Interview Scheduled - PlanMorph Tech';
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="color: #ffffff; margin: 0;">🎉 Interview Scheduled!</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Great news! We'd like to invite you for an interview. We're excited to learn more about you!
+              </p>
+              <div style="background: #f0fdf4; padding: 25px; margin: 25px 0; border-radius: 8px; border: 2px solid #10b981;">
+                <h3 style="color: #059669; margin: 0 0 20px 0;">Interview Details</h3>
+                <p style="color: #666; margin: 8px 0;">
+                  <strong>Type:</strong> ${data.interviewType.replace('_', ' ').toUpperCase()}
+                </p>
+                <p style="color: #666; margin: 8px 0;">
+                  <strong>Date & Time:</strong> ${data.scheduledAt}
+                </p>
+                <p style="color: #666; margin: 8px 0;">
+                  <strong>Duration:</strong> ${data.duration} minutes
+                </p>
+                ${data.meetingLink ? `
+                  <p style="color: #666; margin: 8px 0;">
+                    <strong>Meeting Link:</strong><br>
+                    <a href="${data.meetingLink}" style="color: #667eea; word-break: break-all;">${data.meetingLink}</a>
+                  </p>
+                ` : ''}
+                ${data.location ? `
+                  <p style="color: #666; margin: 8px 0;">
+                    <strong>Location:</strong> ${data.location}
+                  </p>
+                ` : ''}
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                <strong>Tips to Prepare:</strong><br>
+                • Review your portfolio and be ready to discuss your projects<br>
+                • Test your internet connection and audio/video setup<br>
+                • Prepare questions about the role and our team<br>
+                • Have examples of your best work ready to share
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                If you need to reschedule, please reply to this email as soon as possible.
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                See you soon!<br>
+                <strong>PlanMorph Tech Team</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nYour interview has been scheduled!\n\nType: ${data.interviewType}\nDate & Time: ${data.scheduledAt}\nDuration: ${data.duration} minutes\n${data.meetingLink ? `Meeting Link: ${data.meetingLink}\n` : ''}${data.location ? `Location: ${data.location}\n` : ''}\n\nSee you soon!\nPlanMorph Tech`;
+        break;
+
+      case 'accepted':
+        subject = '🎊 Welcome to PlanMorph Tech!';
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 50px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 32px;">🎉 Congratulations!</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 18px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.8; font-size: 16px;">
+                We're thrilled to offer you a position at <strong>PlanMorph Tech</strong>! 
+                Your skills, experience, and passion really impressed us.
+              </p>
+              <div style="background: linear-gradient(135deg, #f0fdf4 0%, #e6f7ff 100%); padding: 30px; margin: 30px 0; border-radius: 12px; text-align: center;">
+                <h2 style="color: #059669; margin: 0 0 15px 0;">Welcome to the Team! 🚀</h2>
+                <p style="color: #666; margin: 0;">You're now part of something special.</p>
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                <strong>Next Steps:</strong><br>
+                • We'll send you a formal offer letter within 24 hours<br>
+                • Our HR team will contact you regarding onboarding<br>
+                • Start preparing for your exciting journey with us!
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                We can't wait to see the amazing things you'll create with us!
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Welcome aboard!<br>
+                <strong>PlanMorph Tech Family</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nCongratulations! We're thrilled to offer you a position at PlanMorph Tech!\n\nYou'll receive a formal offer letter within 24 hours. Our HR team will contact you soon regarding onboarding.\n\nWelcome to the team!\nPlanMorph Tech`;
+        break;
+
+      case 'rejected':
+        subject = 'Thank You for Your Application - PlanMorph Tech';
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="color: #ffffff; margin: 0;">Thank You</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Thank you for taking the time to apply for a position at PlanMorph Tech 
+                and for your interest in joining our team.
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                After careful consideration, we've decided to move forward with other candidates 
+                whose experience more closely matches our current needs. This was a difficult decision, 
+                as we received many strong applications.
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                We encourage you to keep building your skills and portfolio. We'd love to see you 
+                apply again in the future when you have more experience or when we have positions 
+                that better match your strengths.
+              </p>
+              <p style="color: #666; line-height: 1.6;">
+                We wish you all the best in your career journey!
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Best wishes,<br>
+                <strong>PlanMorph Tech Team</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nThank you for applying to PlanMorph Tech. After careful consideration, we've decided to move forward with other candidates at this time.\n\nWe encourage you to apply again in the future.\n\nBest wishes,\nPlanMorph Tech`;
+        break;
+
+      default:
+        throw new Error('Invalid email type');
+    }
+
+    const mailOptions = {
+      from: `"PlanMorph Tech Careers" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: subject,
+      html: htmlContent,
+      text: textContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Talent email sent:', info.messageId);
+
+    // Log communication in database
+    // This would be done in the route handler
+
+  } catch (error) {
+    console.error('Error sending talent email:', error);
+    throw new Error('Failed to send talent email');
+  }
+};
+
 export default {
   sendQuoteEmail,
   sendNewRequestNotification,
   sendClientConfirmationEmail,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  sendTalentEmail
 };
