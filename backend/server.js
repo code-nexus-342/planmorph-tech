@@ -20,6 +20,8 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:5173',
     'https://planmorph-tech-eti2m.ondigitalocean.app', // Your frontend URL
+    'https://tech.planmorph.software', // Custom domain
+    'https://planmorph-tech-htu9k.ondigitalocean.app', // Frontend Digital Ocean URL
     /\.ondigitalocean\.app$/ // Allow all Digital Ocean app URLs
   ],
   credentials: true
