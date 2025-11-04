@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 // Create axios instance with base configuration
-// In production, use VITE_API_URL env variable if available
+// Use backend URL directly for Digital Ocean deployment
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://planmorph-tech-backend-ays3m.ondigitalocean.app/api',
   headers: {
     'Content-Type': 'application/json',
   },
