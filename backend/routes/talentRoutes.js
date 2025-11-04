@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import pool from '../db.js';
-import { authenticateToken } from '../middleware/auth.js';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 import { sendTalentEmail } from '../services/emailService.js';
 
 const router = express.Router();
