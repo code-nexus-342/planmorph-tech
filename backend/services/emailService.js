@@ -965,10 +965,213 @@ const sendTalentEmail = async (email, fullName, type, data = {}) => {
   }
 };
 
+/**
+ * Send support ticket emails
+ */
+const sendSupportTicketEmail = async (email, fullName, type, data = {}) => {
+  try {
+    const transporter = createTransporter();
+    let subject, htmlContent, textContent;
+
+    switch (type) {
+      case 'ticket_created':
+        subject = `✅ Support Ticket Created - ${data.ticketNumber}`;
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0;">✅ Ticket Created</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Thank you for contacting PlanMorph Tech support. We've received your ticket and our team will respond within <strong>${data.slaHours} hours</strong>.
+              </p>
+              <div style="background: #f0f4ff; padding: 25px; margin: 25px 0; border-radius: 8px; border-left: 4px solid #667eea;">
+                <h3 style="color: #667eea; margin: 0 0 15px 0;">Ticket Details</h3>
+                <p style="color: #666; margin: 8px 0;"><strong>Ticket Number:</strong> ${data.ticketNumber}</p>
+                <p style="color: #666; margin: 8px 0;"><strong>Subject:</strong> ${data.subject}</p>
+                <p style="color: #666; margin: 8px 0;"><strong>Category:</strong> ${data.category.replace('_', ' ')}</p>
+                <p style="color: #666; margin: 8px 0;"><strong>Status:</strong> Open</p>
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                <strong>To check your ticket status or add more information:</strong><br>
+                Visit our support portal at <a href="${process.env.FRONTEND_URL || 'https://tech.planmorph.software'}/support" style="color: #667eea;">tech.planmorph.software/support</a> and enter your ticket number.
+              </p>
+              <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0;">
+                <p style="color: #92400e; margin: 0; font-size: 14px;">
+                  💡 <strong>Tip:</strong> Please keep this email for reference. You'll need your ticket number to track progress.
+                </p>
+              </div>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                <strong>PlanMorph Tech Support</strong><br>
+                ${process.env.EMAIL_USER}
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nYour support ticket has been created!\n\nTicket Number: ${data.ticketNumber}\nSubject: ${data.subject}\nCategory: ${data.category}\nExpected Response Time: ${data.slaHours} hours\n\nTo track your ticket, visit: ${process.env.FRONTEND_URL || 'https://tech.planmorph.software'}/support\n\nBest regards,\nPlanMorph Tech Support`;
+        break;
+
+      case 'status_updated':
+        subject = `📝 Ticket Status Updated - ${data.ticketNumber}`;
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb;">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0;">📝 Status Update</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Your support ticket <strong>${data.ticketNumber}</strong> has been updated.
+              </p>
+              <div style="background: #f0fdf4; padding: 25px; margin: 25px 0; border-radius: 8px; border-left: 4px solid #10b981;">
+                <p style="color: #666; margin: 8px 0;"><strong>New Status:</strong> <span style="color: #059669; text-transform: capitalize;">${data.status.replace('_', ' ')}</span></p>
+                ${data.resolution_notes ? `
+                  <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <p style="color: #666; margin: 0 0 10px 0;"><strong>Resolution Notes:</strong></p>
+                    <p style="color: #666; margin: 0; line-height: 1.6;">${data.resolution_notes}</p>
+                  </div>
+                ` : ''}
+              </div>
+              <p style="color: #666; line-height: 1.6;">
+                You can view the full ticket details at: <a href="${process.env.FRONTEND_URL || 'https://tech.planmorph.software'}/support?ticket=${data.ticketNumber}" style="color: #667eea;">View Ticket</a>
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                <strong>PlanMorph Tech Support</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nYour ticket ${data.ticketNumber} status has been updated to: ${data.status}\n${data.resolution_notes ? `\nResolution Notes: ${data.resolution_notes}` : ''}\n\nBest regards,\nPlanMorph Tech Support`;
+        break;
+
+      case 'response_received':
+        subject = `💬 New Response on Your Ticket - ${data.ticketNumber}`;
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0;">💬 New Response</h1>
+            </div>
+            <div style="padding: 40px; background: #ffffff;">
+              <p style="color: #333; font-size: 16px;">Hi ${fullName},</p>
+              <p style="color: #666; line-height: 1.6;">
+                Our support team has responded to your ticket <strong>${data.ticketNumber}</strong>.
+              </p>
+              <div style="background: #f9fafb; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #e5e7eb;">
+                <p style="color: #666; line-height: 1.6; margin: 0;">${data.message}</p>
+              </div>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${process.env.FRONTEND_URL || 'https://tech.planmorph.software'}/support?ticket=${data.ticketNumber}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600;">
+                  View & Reply
+                </a>
+              </div>
+              <p style="color: #666; line-height: 1.6; font-size: 14px;">
+                Please reply to this ticket if you need further assistance.
+              </p>
+            </div>
+            <div style="background: #f7f7f7; padding: 20px; text-align: center;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                <strong>PlanMorph Tech Support</strong>
+              </p>
+            </div>
+          </div>
+        `;
+        textContent = `Hi ${fullName},\n\nOur support team has responded to your ticket ${data.ticketNumber}.\n\nResponse:\n${data.message}\n\nView and reply at: ${process.env.FRONTEND_URL || 'https://tech.planmorph.software'}/support?ticket=${data.ticketNumber}\n\nBest regards,\nPlanMorph Tech Support`;
+        break;
+
+      default:
+        throw new Error('Invalid email type');
+    }
+
+    const mailOptions = {
+      from: `"PlanMorph Tech Support" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: subject,
+      html: htmlContent,
+      text: textContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Support ticket email sent:', info.messageId);
+
+  } catch (error) {
+    console.error('Error sending support ticket email:', error);
+    throw new Error('Failed to send support ticket email');
+  }
+};
+
+/**
+ * Send notification to admin about new ticket
+ */
+const sendNewTicketNotification = async (ticketData) => {
+  try {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: `🎫 New Support Ticket: ${ticketData.ticketNumber} - ${ticketData.priority.toUpperCase()}`,
+      html: `
+        <h2>New Support Ticket Created</h2>
+        <p><strong>Ticket Number:</strong> ${ticketData.ticketNumber}</p>
+        <p><strong>Client:</strong> ${ticketData.clientName}</p>
+        <p><strong>Email:</strong> ${ticketData.clientEmail}</p>
+        <p><strong>Subject:</strong> ${ticketData.subject}</p>
+        <p><strong>Category:</strong> ${ticketData.category}</p>
+        <p><strong>Priority:</strong> ${ticketData.priority}</p>
+        <p><strong>Client Plan:</strong> ${ticketData.plan}</p>
+        <hr>
+        <p><strong>Description:</strong></p>
+        <p>${ticketData.description}</p>
+      `,
+      text: `New Support Ticket\n\nTicket: ${ticketData.ticketNumber}\nClient: ${ticketData.clientName}\nEmail: ${ticketData.clientEmail}\nSubject: ${ticketData.subject}\nCategory: ${ticketData.category}\nPriority: ${ticketData.priority}\nPlan: ${ticketData.plan}\n\nDescription:\n${ticketData.description}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Admin ticket notification sent');
+
+  } catch (error) {
+    console.error('Error sending ticket notification:', error);
+  }
+};
+
+/**
+ * Send notification to admin about ticket update
+ */
+const sendTicketUpdateNotification = async (updateData) => {
+  try {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: `📬 Ticket Update: ${updateData.ticketNumber}`,
+      html: `
+        <h2>Ticket Update</h2>
+        <p><strong>Ticket:</strong> ${updateData.ticketNumber}</p>
+        <p><strong>Client:</strong> ${updateData.clientName}</p>
+        <p><strong>Action:</strong> ${updateData.action}</p>
+      `,
+      text: `Ticket Update\n\nTicket: ${updateData.ticketNumber}\nClient: ${updateData.clientName}\nAction: ${updateData.action}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('Error sending ticket update notification:', error);
+  }
+};
+
 export default {
   sendQuoteEmail,
   sendNewRequestNotification,
   sendClientConfirmationEmail,
   sendPasswordResetEmail,
-  sendTalentEmail
+  sendTalentEmail,
+  sendSupportTicketEmail,
+  sendNewTicketNotification,
+  sendTicketUpdateNotification
 };
