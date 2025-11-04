@@ -26,7 +26,10 @@ A comprehensive talent management system to recruit and manage developers and de
   - Skills and technologies
   - Notable projects showcase
   - Why they want to join
-  - Availability and work preferences
+  - Availability preferences
+  - Expected salary range (final compensation determined by admins based on project team size)
+  
+**Note**: All positions at PlanMorph are full-time. Applicants work full-time unless they have no active project.
 
 ### For Admins (Talent Dashboard)
 - **Access**: Login → Click "Talent" button in admin dashboard

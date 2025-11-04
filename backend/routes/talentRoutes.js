@@ -21,7 +21,6 @@ router.post(
     body('skills').isArray({ min: 1 }).withMessage('At least one skill is required'),
     body('why_join').trim().notEmpty().withMessage('Please tell us why you want to join'),
     body('availability').isIn(['immediate', 'two_weeks', 'one_month', 'flexible']),
-    body('work_type').isIn(['full_time', 'part_time', 'contract', 'freelance']),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -49,7 +48,6 @@ router.post(
       previous_companies,
       why_join,
       availability,
-      work_type,
       expected_salary_range,
     } = req.body;
 
@@ -75,15 +73,15 @@ router.post(
           experience_level, years_of_experience, portfolio_url, github_url,
           linkedin_url, behance_url, dribbble_url, skills, technologies,
           notable_projects, previous_companies, why_join, availability,
-          work_type, expected_salary_range, needs_assessment
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
+          expected_salary_range, needs_assessment
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
         RETURNING id, email, full_name`,
         [
           full_name, email, phone, location, role, specialization,
           experience_level, years_of_experience, portfolio_url, github_url,
           linkedin_url, behance_url, dribbble_url, skills, technologies,
           notable_projects ? JSON.stringify(notable_projects) : null,
-          previous_companies, why_join, availability, work_type,
+          previous_companies, why_join, availability,
           expected_salary_range, needs_assessment
         ]
       );

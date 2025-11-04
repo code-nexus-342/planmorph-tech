@@ -33,12 +33,11 @@ CREATE TABLE IF NOT EXISTS talent_applications (
     previous_companies TEXT,
     
     -- Application Details
-    why_join TEXT NOT NULL, -- Why they want to join
-    availability VARCHAR(50) CHECK (availability IN ('immediate', 'two_weeks', 'one_month', 'flexible')),
-    work_type VARCHAR(50) CHECK (work_type IN ('full_time', 'part_time', 'contract', 'freelance')),
-    expected_salary_range VARCHAR(100),
-    
-    -- Assessment
+    why_join TEXT NOT NULL,
+  availability VARCHAR(50) NOT NULL, -- 'immediate', 'two_weeks', 'one_month', 'flexible'
+  expected_salary_range VARCHAR(100), -- Optional salary expectations (final amount decided by admins based on team size)
+  
+  -- Application status and tracking
     needs_assessment BOOLEAN DEFAULT false, -- If applicant needs to do a task
     assessment_task TEXT, -- Task description if assigned
     assessment_deadline TIMESTAMP,

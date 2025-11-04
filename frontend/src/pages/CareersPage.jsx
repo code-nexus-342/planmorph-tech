@@ -31,7 +31,6 @@ const CareersPage = () => {
     previous_companies: '',
     why_join: '',
     availability: 'flexible',
-    work_type: 'full_time',
     expected_salary_range: '',
   });
 
@@ -495,24 +494,12 @@ const CareersPage = () => {
                     <option value="flexible">Flexible</option>
                   </select>
                 </div>
-                <div>
-                  <label className="label">Work Type *</label>
-                  <select
-                    name="work_type"
-                    value={formData.work_type}
-                    onChange={handleChange}
-                    className="input w-full"
-                    required
-                  >
-                    <option value="full_time">Full Time</option>
-                    <option value="part_time">Part Time</option>
-                    <option value="contract">Contract</option>
-                    <option value="freelance">Freelance</option>
-                  </select>
-                </div>
               </div>
               <div>
                 <label className="label">Expected Salary Range (Optional)</label>
+                <p className="text-sm text-gray-400 mt-1 mb-2">
+                  Final compensation will be determined by admins based on project requirements and team size.
+                </p>
                 <input
                   type="text"
                   name="expected_salary_range"
