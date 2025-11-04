@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showBottomNav, setShowBottomNav] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -12,12 +14,23 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      
+      // Show bottom nav when scrolling down, hide when scrolling up or at top
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setShowBottomNav(true);
+        setIsScrolled(true);
+      } else if (currentScrollY < lastScrollY || currentScrollY < 50) {
+        setShowBottomNav(false);
+        setIsScrolled(currentScrollY > 20);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const handleLogoClick = (e) => {
     e.preventDefault();
@@ -59,10 +72,14 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Top Navbar - Hides when scrolling down */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        animate={{ 
+          y: showBottomNav ? -100 : 0, 
+          opacity: showBottomNav ? 0 : 1 
+        }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-7xl ${
           isScrolled ? 'top-2' : 'top-4'
         }`}
@@ -108,7 +125,7 @@ const Navbar = () => {
                 </motion.span>
                 {isActive(link.path) && (
                   <motion.div
-                    layoutId="navbar-indicator"
+                    layoutId="navbar-indicator-top"
                     className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500"
                     initial={false}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
@@ -162,6 +179,90 @@ const Navbar = () => {
           </div>
         </div>
       </motion.nav>
+
+      {/* Bottom Floating Navbar - Shows when scrolling down */}
+      <AnimatePresence>
+        {showBottomNav && (
+          <motion.nav
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl"
+          >
+            <div className="glass-dark rounded-full px-4 sm:px-6 py-4 flex items-center justify-around shadow-2xl border-2 border-white/20">
+              {/* Quick Nav Icons */}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="relative group"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`flex flex-col items-center gap-1 ${
+                      isActive(link.path) ? 'text-white' : 'text-gray-400'
+                    }`}
+                  >
+                    {/* Icon based on link */}
+                    {link.name === 'Home' && (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                    )}
+                    {link.name === 'Services' && (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                    {link.name === 'Pricing' && (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    )}
+                    <span className="text-xs font-medium hidden sm:block">{link.name}</span>
+                    {isActive(link.path) && (
+                      <motion.div
+                        layoutId="navbar-indicator-bottom"
+                        className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500"
+                        initial={false}
+                      />
+                    )}
+                  </motion.div>
+                </Link>
+              ))}
+
+              {/* Quote Button */}
+              <Link to="/quote">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all"
+                  aria-label="Get a quote"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </motion.button>
+              </Link>
+
+              {/* Scroll to Top Button */}
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-all"
+                aria-label="Scroll to top"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </motion.button>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
