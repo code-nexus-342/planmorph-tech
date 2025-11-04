@@ -1,24 +1,39 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  const handleLinkClick = (e, link) => {
+    if (link.hash) {
+      e.preventDefault();
+      navigate(link.path);
+      // Wait for navigation to complete, then scroll to hash
+      setTimeout(() => {
+        const element = document.getElementById(link.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  };
 
   const footerLinks = {
     Company: [
-      { name: 'About Us', path: '/#about' },
+      { name: 'About Us', path: '/', hash: 'about' },
       { name: 'Services', path: '/services' },
       { name: 'Pricing', path: '/pricing' },
     ],
     Services: [
-      { name: 'AI Chatbots', path: '/services#chatbots' },
-      { name: 'Business Automation', path: '/services#automation' },
-      { name: 'Web Development', path: '/services#web' },
-      { name: 'Data Analytics', path: '/services#analytics' },
+      { name: 'AI Chatbots', path: '/services', hash: 'chatbots' },
+      { name: 'Business Automation', path: '/services', hash: 'automation' },
+      { name: 'Web Development', path: '/services', hash: 'web' },
+      { name: 'Data Analytics', path: '/services', hash: 'analytics' },
     ],
     Support: [
       { name: 'Get a Quote', path: '/quote' },
-      { name: 'Contact Us', path: '/#contact' },
-      { name: 'FAQ', path: '/#faq' },
+      { name: 'Contact Us', path: '/quote' },
+      { name: 'Help Center', path: '/services' },
     ],
   };
 
@@ -81,6 +96,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.path}
+                      onClick={(e) => handleLinkClick(e, link)}
                       className="text-gray-400 text-sm hover:text-white transition-colors"
                     >
                       {link.name}
