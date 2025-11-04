@@ -63,12 +63,12 @@ const Navbar = () => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-6xl ${
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-7xl ${
           isScrolled ? 'top-2' : 'top-4'
         }`}
       >
         <div
-          className={`glass rounded-full px-4 sm:px-6 py-3 flex items-center justify-between transition-all duration-300 ${
+          className={`glass rounded-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between transition-all duration-300 ${
             isScrolled ? 'shadow-2xl bg-white/15' : 'shadow-lg'
           }`}
         >
@@ -82,14 +82,14 @@ const Navbar = () => {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">P</span>
               </div>
-              <span className="text-white font-bold text-base sm:text-lg hidden xs:inline">
+              <span className="text-white font-bold text-base sm:text-lg">
                 PlanMorph Tech
               </span>
             </motion.div>
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -120,21 +120,20 @@ const Navbar = () => {
 
           {/* CTA Button & Mobile Menu Toggle */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <Link to="/quote">
+            <Link to="/quote" className="flex-shrink-0">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transition-all"
+                className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transition-all whitespace-nowrap"
               >
-                <span className="hidden sm:inline">Get a Quote</span>
-                <span className="sm:hidden">Quote</span>
+                Get a Quote
               </motion.button>
             </Link>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+              className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
               aria-label="Toggle menu"
             >
               <svg
@@ -174,7 +173,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
             />
 
             {/* Menu Panel */}
@@ -183,7 +182,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] glass-dark z-50 md:hidden shadow-2xl"
+              className="fixed top-0 right-0 h-full w-[280px] glass-dark z-50 lg:hidden shadow-2xl"
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button */}
