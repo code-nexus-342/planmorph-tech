@@ -188,9 +188,9 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-auto"
+            className="fixed bottom-6 left-0 right-0 z-50 flex justify-center items-center px-4"
           >
-            <div className="glass-dark rounded-full px-6 py-3 flex items-center justify-center gap-6 shadow-2xl border-2 border-white/20">
+            <div className="glass-dark rounded-full px-4 sm:px-6 py-3 flex items-center justify-center gap-4 sm:gap-6 shadow-2xl border-2 border-white/20 w-fit mx-auto">
               {/* Quick Nav Icons */}
               {navLinks.map((link) => (
                 <Link
