@@ -10,6 +10,7 @@ import CareersPage from './pages/CareersPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TalentDashboard from './pages/admin/TalentDashboard';
+import SupportDashboard from './pages/admin/SupportDashboard';
 import ForgotPasswordPage from './pages/admin/ForgotPasswordPage';
 import ResetPasswordPage from './pages/admin/ResetPasswordPage';
 import SignupPage from './pages/admin/SignupPage';
@@ -66,6 +67,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <TalentDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/support" 
+            element={
+              <ProtectedRoute>
+                <SupportDashboard />
               </ProtectedRoute>
             } 
           />
