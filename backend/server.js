@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:5173',
-    'https://planmorph-frontend-xxxxx.ondigitalocean.app', // Replace with your actual frontend URL
+    'https://planmorph-tech-eti2m.ondigitalocean.app', // Your frontend URL
     /\.ondigitalocean\.app$/ // Allow all Digital Ocean app URLs
   ],
   credentials: true
