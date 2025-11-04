@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import pool from '../db.js';
-import { authenticateToken } from '../middleware/authMiddleware.js';
+import authenticateToken from '../middleware/authMiddleware.js';
 import emailService from '../services/emailService.js';
 import crypto from 'crypto';
 
