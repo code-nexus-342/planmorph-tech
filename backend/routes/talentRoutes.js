@@ -1,6 +1,6 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import pool from '../db/pool.js';
+import pool from '../db.js';
 import { authenticateToken } from '../middleware/auth.js';
 import { sendTalentEmail } from '../services/emailService.js';
 
