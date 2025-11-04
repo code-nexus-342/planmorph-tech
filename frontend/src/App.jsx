@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PricingPage from './pages/PricingPage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
+import SupportPage from './pages/SupportPage';
 import CareersPage from './pages/CareersPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -33,12 +34,13 @@ function App() {
           <Route path="/*" element={
             <>
               <Navbar />
-              <main className="flex-grow pt-20 sm:pt-24">
+              <main className="flex-1 pt-20 sm:pt-24">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/services" element={<ServicesPage />} />
                   <Route path="/pricing" element={<PricingPage />} />
                   <Route path="/quote" element={<QuoteRequestPage />} />
+                  <Route path="/support" element={<SupportPage />} />
                   <Route path="/careers" element={<CareersPage />} />
                 </Routes>
               </main>
