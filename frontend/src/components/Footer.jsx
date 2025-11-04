@@ -24,8 +24,8 @@ const Footer = () => {
 
   return (
     <footer className="glass-dark border-t border-white/10 mt-20">
-      <div className="container-custom px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div className="container-custom px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">

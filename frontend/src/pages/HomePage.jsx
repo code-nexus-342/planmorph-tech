@@ -82,7 +82,7 @@ const HomePage = () => {
               transition={{ duration: 1, ease: 'easeOut' }}
               className="mb-8"
             >
-              <h1 className="heading-1 mb-6">
+              <h1 className="heading-1 mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-4">
                 AI-Powered Web Solutions
                 <br />
                 <span className="gradient-text">for Your Business</span>
@@ -93,7 +93,7 @@ const HomePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
+              className="text-base sm:text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto px-4"
             >
               Making AI and modern web technology accessible and affordable for businesses worldwide.
               Get smarter solutions at fairer prices.
