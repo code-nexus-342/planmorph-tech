@@ -13,6 +13,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+console.log('✓ Server starting with talent routes enabled...');
+
 // Middleware
 app.use(cors({
   origin: [
