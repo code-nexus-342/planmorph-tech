@@ -4,7 +4,7 @@ import pool from '../db.js';
 // authMiddleware.js exports a default middleware function named `authMiddleware`.
 // Import it as the expected `authenticateToken` middleware for route protection.
 import authenticateToken from '../middleware/authMiddleware.js';
-import { sendTalentEmail } from '../services/emailService.js';
+import emailService from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -91,7 +91,7 @@ router.post(
       const application = result.rows[0];
 
       // Send confirmation email to applicant
-      await sendTalentEmail(
+      await emailService.sendTalentEmail(
         email,
         full_name,
         'application_received',
@@ -210,7 +210,7 @@ router.patch('/applications/:id/status', authenticateToken, async (req, res) => 
     const application = result.rows[0];
 
     // Send status update email
-    await sendTalentEmail(
+    await emailService.sendTalentEmail(
       application.email,
       application.full_name,
       status,
@@ -260,7 +260,7 @@ router.post('/applications/:id/assessment', authenticateToken, async (req, res) 
     const applicant = appResult.rows[0];
 
     // Send assessment email
-    await sendTalentEmail(
+    await emailService.sendTalentEmail(
       applicant.email,
       applicant.full_name,
       'assessment_assigned',
@@ -310,7 +310,7 @@ router.post('/applications/:id/interview', authenticateToken, async (req, res) =
     const applicant = appResult.rows[0];
 
     // Send interview email
-    await sendTalentEmail(
+    await emailService.sendTalentEmail(
       applicant.email,
       applicant.full_name,
       'interview_scheduled',
