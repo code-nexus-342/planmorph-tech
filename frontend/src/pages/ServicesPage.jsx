@@ -86,7 +86,7 @@ const ServicesPage = () => {
         </svg>
       ),
       title: 'E-commerce Solutions',
-      description: 'Launch your online store with powerful e-commerce features. Accept payments, manage inventory, and sell across Kenya.',
+      description: 'Launch your online store with powerful e-commerce features. Accept payments, manage inventory, and sell worldwide.',
       features: [
         'Product catalog management',
         'Shopping cart & checkout',
@@ -159,7 +159,7 @@ const ServicesPage = () => {
           >
             <h1 className="heading-1 mb-6">Our Services</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Comprehensive AI and web solutions designed for Kenyan businesses.
+              Comprehensive AI and web solutions designed for businesses worldwide.
               From chatbots to e-commerce, we have everything you need to grow digitally.
             </p>
           </motion.div>

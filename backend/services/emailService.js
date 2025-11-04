@@ -78,7 +78,7 @@ const generateQuoteEmailTemplate = (clientName, quoteDetails, requestDetails) =>
                     PlanMorph Tech
                   </h1>
                   <p style="margin: 8px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 500;">
-                    AI-Powered Web Solutions for Kenya
+                    AI-Powered Web Solutions
                   </p>
                 </td>
               </tr>
@@ -210,7 +210,7 @@ const generateQuoteEmailTemplate = (clientName, quoteDetails, requestDetails) =>
                     PlanMorph Tech
                   </p>
                   <p style="margin: 0 0 16px; color: #6b7280; font-size: 14px;">
-                    AI-Powered Web Solutions for Kenya
+                    AI-Powered Web Solutions
                   </p>
                   <p style="margin: 0; color: #9ca3af; font-size: 13px;">
                     Email: ${process.env.EMAIL_USER}
@@ -395,7 +395,7 @@ export const sendClientConfirmationEmail = async (requestDetails) => {
                         PlanMorph Tech
                       </h1>
                       <p style="margin: 8px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 500;">
-                        AI-Powered Web Solutions for Kenya
+                        AI-Powered Web Solutions
                       </p>
                     </td>
                   </tr>
@@ -518,7 +518,7 @@ export const sendClientConfirmationEmail = async (requestDetails) => {
                         PlanMorph Tech
                       </p>
                       <p style="margin: 0 0 16px; color: #6b7280; font-size: 14px;">
-                        AI-Powered Web Solutions for Kenya
+                        AI-Powered Web Solutions
                       </p>
                       <p style="margin: 0; color: #9ca3af; font-size: 13px;">
                         Email: ${process.env.EMAIL_USER}
@@ -563,7 +563,7 @@ Simply reply to this email or contact us at ${process.env.EMAIL_USER}
 
 Best regards,
 PlanMorph Tech
-AI-Powered Web Solutions for Kenya
+AI-Powered Web Solutions
 
 We typically respond within 24 hours during business days.
       `.trim(),
@@ -660,7 +660,7 @@ export const sendPasswordResetEmail = async (email, resetToken) => {
                         PlanMorph Tech
                       </p>
                       <p style="margin: 0 0 16px; color: #6b7280; font-size: 14px;">
-                        AI-Powered Web Solutions for Kenya
+                        AI-Powered Web Solutions
                       </p>
                       <p style="margin: 0; color: #9ca3af; font-size: 13px;">
                         Email: ${process.env.EMAIL_USER}
@@ -687,7 +687,7 @@ If you didn't request this password reset, please ignore this email or contact u
 
 Best regards,
 PlanMorph Tech
-AI-Powered Web Solutions for Kenya
+AI-Powered Web Solutions
       `.trim(),
     };
 

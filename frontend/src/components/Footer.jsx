@@ -35,7 +35,7 @@ const Footer = () => {
               <span className="text-white font-bold text-xl">PlanMorph</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">
-              AI-Powered Web Solutions for Kenya. Making technology accessible and affordable for every business.
+              AI-Powered Web Solutions for Your Business. Making technology accessible and affordable worldwide.
             </p>
             <div className="flex gap-4">
               <a

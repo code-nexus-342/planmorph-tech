@@ -220,7 +220,7 @@ const PricingPage = () => {
               <span className="gradient-text">Pricing</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              No hidden fees. No surprises. Just honest pricing that makes sense for Kenyan businesses.
+              No hidden fees. No surprises. Just honest, transparent pricing for your business.
             </p>
             <div className="glass inline-block px-6 py-3 rounded-full">
               <span className="text-primary-400 font-semibold">💡 Custom solutions available - </span>
@@ -289,7 +289,7 @@ const PricingPage = () => {
           >
             <h2 className="heading-2 mb-4">Why We Are More Affordable</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              We believe in fair pricing. Here is how we compare to other agencies in Kenya.
+              We believe in fair pricing. Here is how we compare to other agencies worldwide.
             </p>
           </motion.div>
 

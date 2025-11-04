@@ -56,7 +56,7 @@ const HomePage = () => {
         </svg>
       ),
       title: 'Web & E-commerce',
-      description: 'Get online with a world-class website at a price that makes sense for Kenya. Modern, fast, and mobile-friendly.',
+      description: 'Get online with a world-class website at a price that makes sense for your business. Modern, fast, and mobile-friendly.',
       features: [
         'Responsive Design',
         'E-commerce Integration',
@@ -85,7 +85,7 @@ const HomePage = () => {
               <h1 className="heading-1 mb-6">
                 AI-Powered Web Solutions
                 <br />
-                <span className="gradient-text">for Kenya</span>
+                <span className="gradient-text">for Your Business</span>
               </h1>
             </motion.div>
             
@@ -95,7 +95,7 @@ const HomePage = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
             >
-              Making AI and modern web technology accessible and affordable for Kenyan businesses.
+              Making AI and modern web technology accessible and affordable for businesses worldwide.
               Get smarter solutions at fairer prices.
             </motion.p>
 
@@ -163,7 +163,7 @@ const HomePage = () => {
           >
             <h2 className="heading-2 mb-4">Our Services</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Comprehensive AI and web solutions tailored for Kenyan businesses
+              Comprehensive AI and web solutions tailored for your business
             </p>
           </motion.div>
 
@@ -191,7 +191,7 @@ const HomePage = () => {
             >
               <h2 className="heading-2 mb-6">Why Choose PlanMorph Tech?</h2>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                We believe every Kenyan business deserves access to world-class technology
+                We believe every business deserves access to world-class technology
                 without breaking the bank. Our mission is to democratize AI and web solutions,
                 making them affordable and practical for businesses of all sizes.
               </p>
@@ -199,7 +199,7 @@ const HomePage = () => {
               <div className="space-y-4">
                 {[
                   'Fair & Transparent Pricing - No hidden costs',
-                  'Kenyan-Focused - We understand local business needs',
+                  'Global Reach - Serving businesses worldwide',
                   'Fast Delivery - Get your solution in weeks, not months',
                   'Ongoing Support - We\'re here for you 24/7',
                 ].map((point, index) => (
