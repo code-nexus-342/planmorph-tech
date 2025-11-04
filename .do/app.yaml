@@ -1,0 +1,70 @@
+name: planmorph-tech
+region: nyc
+
+services:
+  # Backend API Service
+  - name: backend
+    github:
+      repo: code-nexus-342/planmorph-tech
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: backend/Dockerfile
+    source_dir: backend
+    http_port: 5000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: PORT
+        value: "5000"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+        type: SECRET
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+        type: SECRET
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_SECURE
+        value: "false"
+      - key: EMAIL_USER
+        value: ${EMAIL_USER}
+        type: SECRET
+      - key: EMAIL_PASS
+        value: ${EMAIL_PASS}
+        type: SECRET
+      - key: EMAIL_FROM
+        value: "PlanMorph Tech <noreply@planmorph.com>"
+      - key: FRONTEND_URL
+        scope: RUN_TIME
+        value: ${APP_URL}
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    routes:
+      - path: /api
+
+  # Frontend Service
+  - name: frontend
+    github:
+      repo: code-nexus-342/planmorph-tech
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: frontend/Dockerfile
+    source_dir: frontend
+    http_port: 80
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: VITE_API_URL
+        scope: BUILD_TIME
+        value: ${backend.PUBLIC_URL}
